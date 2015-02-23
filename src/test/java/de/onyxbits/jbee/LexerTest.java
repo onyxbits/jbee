@@ -1,0 +1,72 @@
+package de.onyxbits.jbee;
+
+import static org.junit.Assert.*;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.Locale;
+
+import org.junit.Test;
+
+public class LexerTest {
+
+	@Test
+	public void testEmpty() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), "");
+		assertEquals(0, l.nextExpressionToken());
+
+		l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), "  ");
+		assertEquals(0, l.nextExpressionToken());
+	}
+
+	@Test
+	public void testNotTrimmed() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), " 10 ");
+		assertEquals(ExpressionParserTokens.NUM, l.nextExpressionToken());
+		assertEquals(BigDecimal.TEN, l.value.nval);
+		assertEquals(0, l.nextExpressionToken());
+	}
+
+	@Test
+	public void testReallyBig() throws ParseException {
+		BigDecimal big = new BigDecimal("334258881996584172772348376988133535321886562133246665761915543530062965040556644459169091926496005600577044339106423920873119761664900521564718904891474326468094424418664755389746428077934987048939033549141543171563421201139587755644427245776886217213172645770053673062089671875286396730260473748723455541266776380595912100385195730104696418117424254559468583846417673280656417054001191023509102806273171435645108462099891941764574114062089553927579392363972225666700119560537863222315189939879048729334355431499991343859664136855940164138129600573812802501469565074021639521253900449693680442987948766115139699982495533926952249463152498817347537225092192199836667270734220156780250813540278848637191881195784885829587046085396769978770822751317143547244761887273084521406834280213378126529243463812792514968538428454119341021581721311271168210387273290098226831863549740071073809900759766780256947489505164822754267119383666577047119413256753292886548685373764273217347354401773355512725494036894418038349313812053982096629490218426798745303286957292607589136300716992799655653074465878223501288608910163026790835835182339326858332369718723223602241445806515596734719442957172479011624658775963700412591840284895477363649514067427057214263990741524736573937069538535150431240294099678387677881702122956246618080613203074951988050654852052999620010604139377414707580043664275442667492540205304277399706398295124094482958261214993948903678651704816568980500513483699210196429960393853935975390403832747248596298170355674121911162874309327544481083792571799890365239388264621451869097330487395195133222355876551372887498214860571538481713841118436260051384173981705400930412422921087541468759208787378522101580199786620457970715904819351412605799348429535479885395473580234234050705238154898868353695841656540961965662717383468878606942365408093507260847406650306086891048402943");
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), big.toPlainString());
+		assertEquals(ExpressionParserTokens.NUM, l.nextExpressionToken());
+		assertEquals(big, l.value.nval);
+	}
+
+	@Test(expected = ParseException.class)
+	public void testUnfinishedHex() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), "\\x");
+		l.nextExpressionToken();
+	}
+
+	@Test(expected = ParseException.class)
+	public void testUnfinishedBin() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), "\\b");
+		l.nextExpressionToken();
+	}
+
+	@Test(expected = ParseException.class)
+	public void testInvalidCharacter() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), "§");
+		l.nextExpressionToken();
+	}
+
+	@Test(expected = ParseException.class)
+	public void testGarbledDecimal() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(Locale.US), "500..1");
+		l.nextExpressionToken();
+	}
+
+	@Test
+	public void testOperators() throws ParseException {
+		Lexer l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), "+%");
+		assertEquals(ExpressionParserTokens.PLUSPERCENT, l.nextExpressionToken());
+
+		l = new Lexer((DecimalFormat) DecimalFormat.getInstance(), " -% ");
+		assertEquals(ExpressionParserTokens.MINUSPERCENT, l.nextExpressionToken());
+	}
+
+}

@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.onyxbits</groupId>
+	<artifactId>jbee</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>JBEE</name>
+	<description>Java Basic Expression Evaluator - A library for building arbitrary precission pocket calculators.</description>
+	<url>http://www.onyxbits.de/jbee</url>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+
+	<developers>
+		<developer>
+			<name>Patrick Ahlbrecht</name>
+			<email>wurfsendung1@onyxbits.de</email>
+			<organization>Onyxbits</organization>
+			<organizationUrl>http://www.onyxbits.de</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:onyxbits/jbee.git</connection>
+		<developerConnection>scm:git:git@github.com:onyxbits/jbee.git</developerConnection>
+		<url>git@github.com:onyxbits/jbee.git</url>
+	</scm>
+
+
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<sourceFileIncludes>
+						<include>Evaluator.java</include>
+						<include>MathLib.java</include>
+						<include>DefaultMathLib.java</include>
+						<include>NotDefinedException.java</include>
+						<include>ReflectedMathLib.java</include>
+						<include>FunctionCatalogMathLib.java</include>
+					</sourceFileIncludes>
+					<sourcepath>${basedir}/src/main/java/de/onyxbits/jbee</sourcepath>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
