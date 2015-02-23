@@ -88,7 +88,7 @@ final class Lexer {
 
 		prevIdx = idx;
 
-		while (idx < inp.length && inp[idx] == ' ') {
+		while (idx < inp.length && (inp[idx] == ' ' || inp[idx] == '\t')) {
 			// Ignore spaces
 			idx++;
 		}
@@ -103,7 +103,7 @@ final class Lexer {
 			hex();
 			return ExpressionParserTokens.NUM;
 		}
-		
+
 		// Binary number?
 		if (idx < inp.length - 1 && inp[idx] == '\\' && inp[idx + 1] == 'b') {
 			bin();
@@ -215,7 +215,7 @@ final class Lexer {
 	protected int nextDeclarationToken() throws ParseException {
 		prevIdx = idx;
 
-		while (idx < inp.length && inp[idx] == ' ') {
+		while (idx < inp.length && (inp[idx] == ' ' || inp[idx] == '\t')) {
 			// Ignore white space
 			idx++;
 		}
@@ -239,7 +239,7 @@ final class Lexer {
 			hex();
 			return ExpressionParserTokens.NUM;
 		}
-		
+
 		// Binary number?
 		if (idx < inp.length - 1 && inp[idx] == '\\' && inp[idx + 1] == 'b') {
 			bin();

@@ -68,6 +68,11 @@ public class SpecialCasesTest extends AbstractTest {
 		assertEquals(BigDecimal.TEN, e.evaluate("0+world1"));
 		assertEquals(BigDecimal.TEN.negate(), e.evaluate("2* -hello"));
 	}
+	
+	@Test
+	public void testIgnoreWhiteSpaces() {
+		assertEquals(BigDecimal.TEN, evaluator.evaluate(" \t3\t+7\t "));
+	}
 
 	@Test
 	public void testPrecissionloss() {
