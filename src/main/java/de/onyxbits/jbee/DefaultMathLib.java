@@ -153,7 +153,12 @@ public class DefaultMathLib implements MathLib {
 	public BigDecimal onDivision(BigDecimal dividend, BigDecimal divisor) {
 		MathContext mc = getMathContext();
 		if (mc == null) {
-			return dividend.divide(divisor);
+			// As far as design goes, this is incorrect, but rational numbers such as
+			// 1/3 won't terminate after a finite number of digits and the user
+			// probably doesn't want an ArithmeticException in that case. If the
+			// Exception is truly desired, then this method must be overriden in a
+			// subclass.
+			return dividend.divide(divisor, MathContext.DECIMAL64);
 		}
 		else {
 			return dividend.divide(divisor, mc);
