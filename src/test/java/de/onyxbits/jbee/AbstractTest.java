@@ -75,6 +75,10 @@ public abstract class AbstractTest implements MathLib {
 		return mathLib.onMovePoint(num, dir);
 	}
 
+	public BigDecimal onExponentiation(BigDecimal base, BigDecimal exponent) {
+		return mathLib.onExponentiation(base, exponent);
+	}
+
 	public BigDecimal onLookup(String name) {
 		return mathLib.onLookup(name);
 	}

@@ -45,6 +45,13 @@ public class OperatorTest extends AbstractTest {
 	public void testNegate() {
 		assertEquals(new BigDecimal(-50), evaluator.evaluate("- 50"));
 	}
+	
+	@Test
+	public void testPower() {
+		assertEquals(new BigDecimal(16), evaluator.evaluate("2^4"));
+		assertEquals(new BigDecimal("0.01"), evaluator.evaluate("100^-1"));
+		assertEquals(new BigDecimal(18), evaluator.evaluate("2+2^4"));
+	}
 
 	@Test
 	public void testPrecedence() {
@@ -52,7 +59,7 @@ public class OperatorTest extends AbstractTest {
 		assertEquals(BigDecimal.TEN, evaluator.evaluate("2*(10-5)"));
 		assertEquals(BigDecimal.TEN, evaluator.evaluate("\\b1000 | \\b100 >> 1"));
 		assertEquals(BigDecimal.TEN, evaluator.evaluate("4+ \\b100 | \\b100 >> 1"));
-		assertEquals(BigDecimal.TEN, evaluator.evaluate("9 +(1:1 ^ \\b1011)"));
+		assertEquals(BigDecimal.TEN, evaluator.evaluate("9 +(1:1 # \\b1011)"));
 	}
 
 	@Test
@@ -77,7 +84,7 @@ public class OperatorTest extends AbstractTest {
 
 	@Test
 	public void testBitwiseXor() {
-		assertEquals(new BigDecimal(6), evaluator.evaluate("\\b101 ^ \\b011"));
+		assertEquals(new BigDecimal(6), evaluator.evaluate("\\b101 # \\b011"));
 	}
 
 	@Test

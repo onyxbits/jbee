@@ -6,12 +6,13 @@ import java.text.ParseException;
 
 /* YACC Declarations */
 %token NUM IDENT LSTSEP 
-%left '&' '|' '^'
+%left '&' '|' '#'
 %left BSHIFTL BSHIFTR
 %left '-' '+'
 %left PLUSPERCENT MINUSPERCENT
 %left '*' '/' '%'
 %left NEG
+%right '^'
 %right '~'
 %left ':'
 
@@ -29,7 +30,7 @@ exp: NUM { $$ = $1; }
  | exp BSHIFTL exp { $$ = actShiftLeft($1, $3); }
  | exp '&' exp { $$ = actAnd($1, $3); }
  | exp '|' exp { $$ = actOr($1, $3); }
- | exp '^' exp { $$ = actXor($1, $3); }
+ | exp '#' exp { $$ = actXor($1, $3); }
  | exp '+' exp { $$ = actAdd($1, $3); }
  | exp '-' exp { $$ = actSubtract($1, $3); }
  | exp '%' exp { $$ = actRemainder($1, $3); }
@@ -38,6 +39,7 @@ exp: NUM { $$ = $1; }
  | exp '*' exp { $$ = actMultiply($1, $3); }
  | exp '/' exp { $$ = actDivide($1, $3); }
  | '-' exp %prec NEG { $$ = actNegate($2); }
+ | exp '^' exp { $$ = actPower($1, $3); }
  | '~' exp { $$ = actNot($2); }
  | exp ':' exp { $$ = actMove($1, $3); }
  | '(' exp ')' { $$ = $2; }
@@ -87,6 +89,10 @@ private TokenValue actEmpty() {
 
 private TokenValue actCall(TokenValue name, TokenValue param) {
   return new TokenValue(mathLib.onCall(name.sval, param.lstval));
+}
+
+private TokenValue actPower(TokenValue x, TokenValue y) {
+  return new TokenValue(mathLib.onExponentiation(x.nval, y.nval));
 }
 
 private TokenValue actNot(TokenValue num) {
