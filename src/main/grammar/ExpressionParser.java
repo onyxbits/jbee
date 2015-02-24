@@ -497,7 +497,7 @@ void yyerror(String s) {
   String token = lexer.lastMatch();
   mathLib.onSyntaxError(lexer.getPosition()-token.length()+1, token.trim());
   // Don't rely on a properly implemented mathlib
-  throw new ArithmeticException("syntax error");
+  throw new ArithmeticException("syntax error - also your mathlib is buggy");
 }
 
 int yylex() {
